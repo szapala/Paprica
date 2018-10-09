@@ -26,13 +26,16 @@ class Index extends Controller
 
     public function validAction()
     {
+        $statusMsg='';
         $imie = $_POST['imie'] ?? 'brak';
         $nazwisko = $_POST['nazwisko'] ?? 'brak';
 
-        if($_FILES['file']['size'] == 0 && $_FILES['file']['error'] == 0){ //plik ma wage 0 i nie po błędzie
+        if(!$_FILES['file']['name'] == ''){ //plik ma wage 0 i nie po błędzie
             $plik = $_FILES['file'];
+
         } else {
             $plik = 'brak';
+
         }
 
         $imie = filter_var($imie, FILTER_SANITIZE_STRING);
@@ -47,6 +50,7 @@ class Index extends Controller
         } else {
             $validePlik = true;
         }
+
 
         if($imie != 'brak'){
 
@@ -68,7 +72,7 @@ class Index extends Controller
                     }
                 }
 
-            } else if($plik == 'brak'){
+            } elseif($plik == 'brak'){
 
                 $prepare = $this->baza->prepare("INSERT INTO `".PREFIX."data` (imie, nazwisko, plik_short) VALUES (:imie, :nazwisko,  'brak')");
                 $prepare->bindParam(':imie', $imie);
